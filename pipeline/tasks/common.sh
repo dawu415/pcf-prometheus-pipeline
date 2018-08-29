@@ -44,6 +44,7 @@ function login_to_bosh_uaa() {
 	uaa_login_password=$($CURL --path=/api/v0/deployed/products/$director_id/credentials/.director.uaa_login_client_credentials | jq -r .credential.value.password)
 	uaa_admin_password=$($CURL --path=/api/v0/deployed/director/credentials/uaa_admin_user_credentials | jq -r .credential.value.password)
 
+	export $director_ip="director.sbox.dawu.io"
 	echo "Logging into BOSH UAA..."
 	uaac target https://$director_ip:8443 --skip-ssl-validation
 	uaac token owner get login -s $uaa_login_password<<EOF
