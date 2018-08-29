@@ -20,18 +20,23 @@ resources:
   source:
     uri: https://github.com/bosh-prometheus/prometheus-boshrelease.git
     branch: master
+- name: prometheus-pivotal-kpi
+  type: git
+  source:
+    uri: https://github.com/pivotalservices/prometheus-pcf-alerts.git
+    branch: master
 - name: prometheus-release-blob
   type: github-release
   source:
     user: bosh-prometheus
     repository: prometheus-boshrelease
-    access_token: ((github_token))
+    access_token: ((github_token_import))
 - name: node-exporter-release
   type: github-release
   source:
     user: bosh-prometheus
     repository: node-exporter-boshrelease
-    access_token: ((github_token))
+    access_token: ((github_token_import))
 - name: pcf-bosh-creds
   type: bosh-creds
   source:
@@ -78,6 +83,7 @@ jobs:
   - get: pcf-bosh-creds
     params:
       deployment: ((deployment_name))
+  - get: prometheus-pivotal-kpi
   - task: retrieve-params-from-opsman
     file: pcf-prometheus-pipeline/pipeline/tasks/retrieve-params-from-opsman.yml
     params:
@@ -96,6 +102,7 @@ jobs:
       releases:
       - prometheus-release-blob/prometheus-*.tgz
       ops_files:
+      - prometheus-pivotal-kpi/pivotal-kpis-op.yml
       - migration/*.yml
       - prometheus-release-git/manifests/operators/monitor-bosh.yml
       - prometheus-release-git/manifests/operators/enable-bosh-uaa.yml

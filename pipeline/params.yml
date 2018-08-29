@@ -2,38 +2,38 @@
 deployment_name: prometheus
 
 # Operations Manager credentials to set
-pcf_opsman_admin_username:
-pcf_opsman_admin_password:
-opsman_url:
+pcf_opsman_admin_username: ((opsman_admin.username))
+pcf_opsman_admin_password: ((opsman_admin.password))
+opsman_url: opsman.sbox.dawu.io
 
 # Set to either opsman_bosh or external_bosh. For external BOSH you need to provide the details below
-director_for_deployment: opsman_bosh
+director_for_deployment: external_bosh
 
 # If you set director_for_deployment to external_bosh then you need to provide the Director details. Otherwise keep them empty
-external_bosh_address:
-external_bosh_client:
-external_bosh_client_secret:
-external_bosh_ca_cert:
+external_bosh_address: 10.0.0.6:25555
+external_bosh_client: ((bosh_client.username))
+external_bosh_client_secret: ((bosh_client.password))
+external_bosh_ca_cert: ((bosh_ca_cert.certificate))
 
 # set to something very secure! you won't need to use these passwords at all
-uaa_clients_firehose_exporter_secret:
-uaa_clients_cf_exporter_secret:
-uaa_bosh_exporter_client_secret:
+uaa_clients_firehose_exporter_secret: ((firehose_client_secret))
+uaa_clients_cf_exporter_secret: ((cf_exporter_client_secret))
+uaa_bosh_exporter_client_secret: ((bosh_exporter_client_secret))
 
 # This will be the admin password to log in to Grafana GUI
-grafana_admin_password:
+grafana_admin_password: ((prometheus_grafana))
 # This will be the admin password to log in to Prometheus GUI
-prometheus_admin_password:
+prometheus_admin_password: ((prometheus_scraper))
 # This will be the admin password to log in to Alertmanager GUI
-alertmanager_password:
+alertmanager_password: ((prometheus_alertmanager))
 
 # AZ(s) to deploy to (as defined in the Director configuration)
-deploy_azs: [europe-west1-d]
+deploy_azs: [z1,z2,z3]
 # network to deploy to (as defined in the Director configuration)
-deploy_network: [{name: pcf-net}]
+deploy_network: [{name: default}]
 
 # Github token to authenticate with Github. You can generate one at https://github.com/settings/tokens
-github_token:
+github_token_import: ((github_token))
 
 #
 # Parameters below are fine if you are just kicking tires
@@ -46,4 +46,4 @@ deploy_vm_type_small: small
 # arbitrary name for this environment (eg. 'prod')
 metrics_environment: pcf
 
-skip_ssl_verify: true
+skip_ssl_verify: false
